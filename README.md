@@ -63,9 +63,7 @@
 - Web Share
 
 ## 预览
-<figure style="display:flex;">
-	<img alt="feed" src="screenshots/feed.jpg" width="30%"/><img alt="member" src="screenshots/member.jpg" width="30%"/><img alt="diary" src="screenshots/diary.jpg" width="30%"/>
-</figure>
+<img alt="feed" src="screenshots/screenshot.jpg" width="100%"/>
 
 ## 许可
 MIT
