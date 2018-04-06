@@ -1,0 +1,196 @@
+.topbar{
+	width: 100%;
+	height: 54px;
+	box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
+	display: flex;
+	justify-content: flex-start;
+	flex-shrink: 0;
+	z-index: 1;
+	background-color: white;
+}
+.container{
+	height: calc(100% - 54px);
+	flex-shrink: 1;
+}
+
+
+.topbar button{
+	height: 48px;
+	margin: 3px 0;
+	font-size: 24px;
+}
+button.grid{
+	color: #808080;
+}
+button.grid,button.list{
+	width: 48px;
+}
+button.more{
+	width: 32px;
+	margin-right: 4px;
+}
+
+button.grid::before{
+	content: "\E5C3";
+}
+button.list::before{
+	content: "\EB4D";
+}
+button.more::before{
+	content: "\E5D4";
+}
+.side-by-side{
+	width: 200%;
+	height: 100%;
+}
+.feed{
+	background-color: #f5f5f5;
+}
+.side-by-side>.feed{
+	height: 100%;
+	width: 50%;
+	overflow: auto;
+}
+.card{
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	background-color: #ffffff;
+	margin-bottom: 8px;
+}
+
+
+.card>.from{
+	position: relative;
+	display: flex;
+	height: 48px;
+	padding: 0 16px;
+}
+
+
+.card>.from>.avatar{
+	width: 24px;
+	height: 24px;
+	border-radius: 50%;
+	background-size: cover;
+	margin: auto 0;
+	margin-right: 16px;
+}
+.card>.from>.author,.from>.group{
+	line-height: 52px;
+	font-size: 13px;
+}
+.card>.from>.author{
+	color: #333333;
+}
+.card>.from>.group{
+	color: #999999;
+	position: relative;
+	display: flex;
+}
+.card>.from>.group::before{
+	content: "\E5C7";
+	font-family: 'Material Icons';
+	line-height: 48px;
+	font-size: 12px;
+	text-align: center;
+	width: 18px;
+	transform: rotate(90deg);
+}
+.card>.from>.time{
+	color: #999999;
+	font-size: 12px;
+	line-height: 50px;
+	transform: scale(0.9166);
+	transform-origin: 100% 50%;
+}
+
+
+
+.card>.from,.card>.content,
+.activity.diary .topbar{
+	box-sizing: border-box;
+	border-bottom: 1px solid transparent;
+	border-image-repeat: round;
+	border-image-slice: 3;
+	border-image-source: url('border.png');
+}
+
+/*.from::after,.content::after{
+	content: "";
+	position: absolute; 
+	width: 100%;
+	left: 0;
+	height: 1px;
+	bottom: -1px;
+	background-image: -webkit-gradient(linear,left bottom,left top,color-stop(0.5,transparent),color-stop(0.5,#dddddd),to(#dddddd));
+}
+*/
+.card>.content{
+	padding: 16px 16px 39px;
+	display: flex;
+}
+
+.card>.content>.text{
+	flex-shrink: 1;
+	flex-grow: 1;
+}
+
+.card>.content>.image{
+	width: 88px;
+	height: 88px;
+	margin-left: 16px;
+	flex-shrink: 0;
+	background-size: cover;
+	background-position: center;
+}
+
+.card>.content>.text>.title{
+	font-size: 18px;
+	color: #333333;
+	line-height: 1.7;
+	margin-top: 2px;
+	margin-bottom: 8px;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	overflow: hidden;
+}
+.card>.content>.text>.snippet{
+	font-size: 12px;
+	color: #777777;
+	line-height: 1.8;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	overflow: hidden;
+}
+.card>.favor{
+	position: absolute;
+	right: 0;bottom: 0;
+	width: 80px; height: 48px;
+	display: flex;
+}
+
+button.heart::after{
+	content: "\E87D";
+	color: #fe514b;
+}
+button.heart.off::after{
+	color: #eeeeee;
+}
+
+.card>.favor>.heart{
+	width: 18px;
+	margin-left: 23px;
+	margin-right: 7px;
+	font-size: 18px;
+}
+.card>.favor>.count{
+	font-size: 12px;
+	line-height: 50px;
+	text-align: center;
+	width: 16px;
+	transform: scale(0.75);
+	color: #333333;
+}

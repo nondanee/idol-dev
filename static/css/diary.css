@@ -1,0 +1,240 @@
+.activity.diary{
+	/*background-image: url(11.png);*/
+	background-size: cover;
+	background-position: 0 -24px;
+	/*overflow: auto;*/
+}
+
+
+.activity.diary .topbar{
+	/*background-color: transparent;*/
+	background-color: #ffffff;
+	box-shadow: none;
+	position: fixed;
+	padding: 0 3px;
+	transition: all 0.12s ease-out;
+}
+
+.activity.diary .topbar button{
+	width: 48px;
+	margin: 3px 2px;
+}
+.activity.diary .topbar button.close,
+.activity.diary .topbar button.open{
+	font-size: 20px;
+}
+.activity.diary .topbar button.share,
+.activity.diary .topbar button.heart{
+	font-size: 18px;
+}
+.activity.diary .topbar button,
+.activity.diary .topbar button.heart.off::after{
+	color: #333333; 
+}
+button.close::after{
+	content: '\E14C';
+}
+button.share::after{
+	content: '\E80D';
+}
+button.open::after{
+	content: '\E5C8';
+}
+.activity.diary .topbar .favor{
+	display: flex;
+	justify-content:center;
+	height: 54px;
+	padding: 0 12px;
+}
+.activity.diary .topbar button.heart{
+	width: 20px;
+}
+.activity.diary .topbar .favor>.count{
+	font-size: 12px;
+	height: 100%;
+	line-height: 54px;
+	text-align: center;
+	transformrm: scale(0.916);
+}
+
+
+.header{
+	padding-top: 54px;
+	padding-bottom: 32px;
+	display: block;
+}
+.header>.avatar{
+	width: 56px;
+	height: 56px;
+	margin: 64px auto 32px;
+	border-radius: 50%;
+	background-size: cover;
+}
+.header>.title{
+	padding: 0 12%;
+	color: #333333;
+	font-size: 24px;
+	margin-bottom: 24px;
+	font-weight: bold;
+	word-break: break-all;
+}
+.header>.info{
+	color: #999999;
+	text-align: center;
+	font-size: 16px;
+	margin-left: -30%;
+	width: 160%;
+	transform: scale(0.625); 
+}
+.separator{
+	font-size: 12px;
+	color: #777777;
+	display: flex;
+	justify-content: center;
+	margin-top: 24px;
+}
+.separator::before,.separator::after{
+	content: "";
+	width: 32px;
+	height: 1px;
+	background-image: url(line.png);
+	background-repeat: repeat-x;
+	background-size: 100% 1px;
+	margin: auto 18px;
+	/*background-color: #e6e6e6;*/
+	/*transform: scaleY(0.333);*/
+}
+.header>.title,.header>.info,.separator{
+	text-align: center;
+}
+
+
+.article>.text{
+	padding-bottom: 64px;
+}
+.article>.text>p{
+	line-height: 1.7;
+	font-size: 15px;
+	padding: 0  6%;
+	margin: 0;
+	color: #555555;
+	overflow: hidden;
+	word-break: break-all;
+}
+.article>.text>img{
+	max-width: 100%;
+	display: block;
+}
+.article>.text>img.large{
+	width: 100%;
+	display: block;
+	padding-top: 8px;
+	padding-bottom: 8px;
+}
+/*.footer{
+	background-image: url("/static/image/footer.png");
+	width: 100%;
+	height: 36px;
+	text-align: center;
+	background-repeat: no-repeat;
+	background-size: auto 18px;
+	background-position: center center;
+}*/
+/*::selection{
+	background: #b4b4b4;
+	color: #fff;
+}
+br,img,.separator{
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+*/
+.recommand{
+	margin-bottom: 160px;
+}
+.recommand .separator{
+	margin: 35px auto;
+}
+
+.pool{
+	height: 200px;
+	display: flex;
+	overflow-y: auto;
+}
+.pool::-webkit-scrollbar {
+	display: none;
+}
+.pool .block{
+	position: relative;
+	width: 135px;
+	height: 180px;
+	background-color: rgba(72, 72, 72, 0.47);;
+	border-radius: 4px;
+	margin: 0 8px;
+	flex-shrink: 0;
+	padding: 22px 14px 14px 14px;
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+}
+.block>.image{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	padding: 4px;
+    margin: -4px;
+	top: 0;left: 0;
+	background-size: cover;
+	background-position: center;
+	/*filter: blur(1.2px);*/
+}
+.block>.image::after{
+	content: "";
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;left: 0;
+	background-color: rgb(0,0,0,0.3);
+	/*background-color: rgb(0,0,0,0.12);*/
+}
+.pool::before,.pool::after{
+	content: "";
+	width: 16px;
+	background-color: transparent;
+	height: 180px;
+	flex-shrink: 0;
+}
+.block>.title{
+	position: relative;
+	color: white;
+	font-size: 13px;
+	flex-grow: 1;
+}
+.block>.author{
+	position: relative;
+	height: 18px;
+	display: flex;
+}
+.block>.author>.avatar{
+	width: 14px;
+	height: 14px;
+	border-radius: 50%;
+	background-color: red;
+	background-size: cover;
+	margin: auto 4px auto 0;
+	flex-shrink: 0;
+}
+.block>.author>.name{
+	font-size: 12px;
+	height: 18px;
+	line-height: 18px;
+	color: white;
+	transform: scale(0.833);
+	transform-origin: left center;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}

@@ -1,0 +1,88 @@
+.activity.member .front{
+	background-color: #f5f5f5;
+}
+.activity.member .topbar{
+	box-shadow: none;
+	position: absolute;
+	top: 0;
+}
+.activity.member .topbar.fixed{
+	box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
+	position: fixed;
+}
+.activity.member .topbar>button{
+	margin: 3px;
+	width: 48px;
+}
+button.back::after{
+	content: '\E5C4';
+}
+button.subscribe::after{
+	content: '\E7F4';
+}
+button.subscribe.off{
+	color: #bbb
+}
+button.subscribe.off::after{
+	content: '\E7F6';
+}
+.overview{
+	text-align: center;
+	background-color: white;
+	margin-bottom: 8px;
+	overflow: hidden;
+}
+.overview>.avatar{
+	width: 90px;
+	height: 90px;
+	border-radius: 50%;
+	overflow: hidden;
+	margin: 76px auto 20px;
+	background-size: cover;
+	background-position: center;
+}
+.overview>.name{
+	font-size: 20px;
+	color: #333333;
+	font-weight: bold;
+}
+.overview>.introduction{
+	font-size: 12px; 
+	color: #777777;
+	margin-top: 5px;
+}
+.overview>.information{
+	font-size: 12px;
+	transform: scale(0.916);
+	color: #999999;
+	margin-top: 5px;
+}
+.overview>.information>.follows{
+	margin-right: 18px;
+}
+.overview>.information>.follows::after{
+	content: "人关注";
+}
+.overview>.information>.subscribes::after{
+	content: "人订阅";
+}
+button.follow{
+	width: 88px;
+	height: 28px;
+	border-radius: 3px;
+	font-size: 15px;
+	font-weight: bold;
+	margin: 18px auto 16px;
+	background-color: #e6e6e6;
+	color: #000000;
+}
+button.follow::after{
+	content: "\E876";
+}
+button.follow.off{
+	background-color: #000000;
+	color: #ffffff;
+}
+button.follow.off::after{
+	content: "\E145";
+}
