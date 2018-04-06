@@ -18,7 +18,7 @@
 
 ~~自己设计是不可能的，这辈子都不可能再做设计的~~
 
-### 闲谈
+## 闲谈
 
 离现在这张lets encrypt证书过期还有不到一星期
 
@@ -32,7 +32,7 @@
 
 很多时候都没得选择，希望自己这样走没问题吧
 
-### 实现
+## 实现
 
 还是原来的技术栈 aiohttp + mysql + es5
 
@@ -46,7 +46,7 @@
 
 希望我能把这个做出来吧
 
-### 代办
+## 代办
 
 好多好多
 
@@ -62,8 +62,10 @@
 - 订阅与Web Push
 - Web Share
 
-### 预览
-<img alt="feed" src="screenshots/feed.jpg" width="30%"/><img alt="member" src="screenshots/member.jpg" width="30%"/><img alt="diary" src="screenshots/diary.jpg" width="30%"/>
+## 预览
+<figure style="display:flex;">
+	<img alt="feed" src="screenshots/feed.jpg" width="30%"/><img alt="member" src="screenshots/member.jpg" width="30%"/><img alt="diary" src="screenshots/diary.jpg" width="30%"/>
+</figure>
 
-### 许可
+## 许可
 MIT
