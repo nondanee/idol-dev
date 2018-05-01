@@ -50,20 +50,20 @@
 
 好多好多
 
-- SwipeRefreshLayout
-- PhotoSwipe
-- Hash Jump
-- 关注页、添加页
-- 更新与未读
-- 展开的过渡动画
-- 夜间模式
-- 设置页
-- Service Worker
-- 订阅与Web Push
-- Web Share
+- [ ] SwipeRefreshLayout
+- [x] PhotoSwipe
+- [ ] Hash Jump
+- [ ] 关注页、添加页
+- [ ] 更新与未读
+- [x] 展开的过渡动画
+- [ ] 夜间模式
+- [ ] 设置页
+- [ ] Service Worker
+- [ ] 订阅与Web Push
+- [x] Web Share
 
 ## 预览
-<img alt="feed" src="screenshots/screenshot.jpg" width="100%"/>
+<img alt="screenshot" src="screenshots/screenshot.jpg" width="100%"/>
 
 ## 许可
 MIT

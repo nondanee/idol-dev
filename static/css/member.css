@@ -1,6 +1,17 @@
-.activity.member .front{
-	background-color: #f5f5f5;
+.activity.member>.front,
+.activity.member>.back{
+	animation-duration: 280ms;
+	animation-timing-function: ease-out;
+	animation-iteration-count: 1;
 }
+.activity.member>.front{
+	background-color: #f5f5f5;
+	animation-name: riseUp;
+}
+.activity.member>.back{
+	animation-name: fadeIn;
+}
+
 .activity.member .topbar{
 	box-shadow: none;
 	position: absolute;

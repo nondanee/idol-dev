@@ -1,0 +1,32 @@
+@-webkit-keyframes spreadOut {
+	0% {
+		transform: translateY(100px);
+		height: 100px;
+	}
+	50%{
+		transform: translateY(100px);
+		height: 100px;
+	}
+	100% {
+		transform: translateY(0);
+		height: 100%;
+	}
+}
+
+@-webkit-keyframes riseUp {
+	0% {
+		transform: translateY(100%);
+	}
+	100% {
+		transform: translateY(0);
+	}
+}
+
+@-webkit-keyframes fadeIn {
+	0% {
+		background-color: rgba(0,0,0,0);
+	}
+	100% {
+		background-color: rgba(0,0,0,0.8);
+	}
+}

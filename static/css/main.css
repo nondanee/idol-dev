@@ -89,13 +89,12 @@ button.more::before{
 	display: flex;
 }
 .card>.from>.group::before{
-	content: "\E5C7";
+	content: "\EB4E";
 	font-family: 'Material Icons';
 	line-height: 48px;
 	font-size: 12px;
 	text-align: center;
 	width: 18px;
-	transform: rotate(90deg);
 }
 .card>.from>.time{
 	color: #999999;

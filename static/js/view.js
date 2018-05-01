@@ -5,7 +5,7 @@ function Diary(fid,articleDom,activityDom){
 	let front = activityDom.childNodes[1]
 	let height = activityDom.scrollHeight
 
-	ajaxRequest("GET","/api/diary/"+fid,function(responseText){
+	ajaxRequest("GET",`/api/diary/${fid}`,function(responseText){
 		let diary = JSON.parse(responseText)
 		buildArticle(articleDom,diary)
 		topbarDom = articleDom.getElementsByClassName("topbar")[0]
@@ -13,27 +13,29 @@ function Diary(fid,articleDom,activityDom){
 	})
 	
 	let beforeScroll = front.scrollTop
+	let translateY = 0
+
+	function topbarFollow(){
+		topbarDom.style.transform = `translateY(${translateY}px)`
+	}
+
 	front.addEventListener("scroll", function()	{
 		let afterScroll = this.scrollTop
 		let delta = beforeScroll - afterScroll
-		let translateY = topbarDom.style.transform
-		translateY = (translateY != "") ? parseInt(translateY.slice(11,-3)) : 0
+
 		beforeScroll = afterScroll
-		if (translateY+delta < -topbarDomHeight){
-			topbarDom.style.transform = "translateY("+(-topbarDomHeight)+"px)"
-		}
-		else if(translateY+delta > 0){
-			topbarDom.style.transform = null
-		}
-		else{
-			topbarDom.style.transform = "translateY("+(translateY+delta)+"px)"
-		}
+		translateY += delta
+		if(translateY > 0)
+			translateY = 0
+		else if(translateY < - topbarDomHeight)
+			translateY = -topbarDomHeight
+		topbarFollow()
 	})
 	
-	let actionQuit
-	let startY
-	let moveY
-	let locked
+	let actionQuit = null
+	let startY = 0
+	let moveY = 0
+	let locked = false
 	// let startX
 	// let moveX
 
@@ -53,6 +55,7 @@ function Diary(fid,articleDom,activityDom){
 		}
 		else{
 			actionQuit = null
+			topbarDom.classList.add("change")
 		}
 		if (actionQuit != null){
 			front.classList.add("change")
@@ -92,6 +95,7 @@ function Diary(fid,articleDom,activityDom){
 		}
 		else{
 			cancelQuit()
+			topbarDom.classList.add("change")
 		}
 	}
 
@@ -117,13 +121,12 @@ function Diary(fid,articleDom,activityDom){
 			history.back(-1)
 		}
 		else{
-			let endTranslateY = (topbarDom.style.transform != "") ? parseInt(topbarDom.style.transform.slice(11,-3)) : 0
-			if (endTranslateY <= -topbarDomHeight / 2){
-				topbarDom.style.transform = "translateY("+(-topbarDomHeight)+"px)"
-			}
-			else{
-				topbarDom.style.transform = null
-			}
+			if (translateY <= -topbarDomHeight / 2)
+				translateY = -topbarDomHeight
+			else
+				translateY = 0
+			topbarDom.classList.remove("change")
+			topbarFollow()
 		}
 	}
 }
@@ -167,6 +170,26 @@ function buildArticle(articleDom,diary){
 	topbarDom.appendChild(openButton)
 	articleDom.appendChild(topbarDom)
 
+	topbarDom.onclick = function (){
+		toTop(articleDom.parentNode)
+	}
+
+	shareButton.onclick = function (event){
+		event.stopPropagation()
+		navigator.share({
+			title: document.title,
+			text: `${diary.title} | ${diary.author.name}`,
+			url: window.location.href 
+		})
+		// .then(function(){console.log('Successfully shared')})
+		.catch(function(error){console.log('Error sharing:', error)})
+	}
+	
+	openButton.onclick = function (event){
+		event.stopPropagation()
+		window.open(diary.link)
+	}
+
 	let headerDom = document.createElement('div')
 	headerDom.className = "header"
 	let avatarDom = document.createElement('div')
@@ -178,9 +201,9 @@ function buildArticle(articleDom,diary){
 	let separatorDom = document.createElement('div')
 	separatorDom.className = "separator"
 
-	avatarDom.style.backgroundImage = 'url(https://dev.aidoru.tk'+diary.author.avatar+')'
+	avatarDom.style.backgroundImage = `url(https://dev.aidoru.tk${diary.author.avatar}`
 	titleDom.innerHTML = diary.title
-	infoDom.innerHTML = diary.author.name + ' · ' + diary.author.affiliation + ' · ' + timeFormat(new Date(diary.post))
+	infoDom.innerHTML = `${diary.author.name} · ${diary.author.affiliation}  · ${timeFormat(new Date(diary.post))}`
 	separatorDom.innerHTML = '~'
 
 	headerDom.appendChild(avatarDom)
@@ -198,6 +221,7 @@ function buildArticle(articleDom,diary){
 
 
 function typesetting(text){
+	let items = []
 	let article = document.createDocumentFragment()
 	text = text.split("<br>")
 	let imgTag = /<img[^>]+>/g
@@ -213,13 +237,13 @@ function typesetting(text){
 			article.appendChild(paragraph)
 		}
 		else{
-			imgs = text[i].match(imgTag)
-			parts = text[i].split(imgTag)
+			let imgs = text[i].match(imgTag)
+			let parts = text[i].split(imgTag)
 			let paragraph = document.createElement("p")
 			for(let j=0;j<parts.length-1;j++){
 				paragraph.innerHTML += parts[j]
-				nextImgSrc = "https://dev.aidoru.tk" + imgs[j].match(/src="([^"]+)"/)[1]
-				nextImgSize = imgs[j].match(/size="([^"]+)"/)[1].split("x")
+				let nextImgSrc = "https://dev.aidoru.tk" + imgs[j].match(/src="([^"]+)"/)[1]
+				let nextImgSize = imgs[j].match(/size="([^"]+)"/)[1].split("x")
 				// if (nextImgSize[0]>=500||nextImgSize[1]>=500){
 				if (nextImgSize[0]>=200){
 					article.appendChild(paragraph)
@@ -228,6 +252,17 @@ function typesetting(text){
 					largeImg.src = nextImgSrc
 					article.appendChild(largeImg)
 					paragraph = document.createElement("p")
+					items.push({
+						msrc: nextImgSrc,
+						src: nextImgSrc,
+						w: parseInt(nextImgSize[0]),
+						h: parseInt(nextImgSize[1]),
+						el: largeImg
+					})
+					let imgIndex = items.length - 1
+					largeImg.onclick = function(){
+						openGallery(imgIndex, items)
+					}
 				}
 				else{
 					let img = document.createElement("img")
@@ -245,6 +280,34 @@ function typesetting(text){
 	return article
 }
 
+let galleryOpened = false
+
+function openGallery(index, items) {
+	galleryOpened = true
+	let pswpElement = document.querySelectorAll('.pswp')[0]
+	let options = {
+		getThumbBoundsFn: function(index) {
+			let element = items[index].el
+			let pageYScroll = window.pageYOffset || document.documentElement.scrollTop
+			let rect = element.getBoundingClientRect()
+			return {x:rect.left, y:rect.top + pageYScroll, w:rect.width}
+		},
+		index: index,
+		loop: false
+	}
+	let gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, options)
+	gallery.init()
+}
+
+
+function diaryAnimate(element){
+	let rect = element.getBoundingClientRect()
+	let animate = document.styleSheets[5].rules[0]
+	animate.findRule('0%').style.transform = `translateY(${rect.top}px)`
+	animate.findRule('0%').style.height = `${rect.height}px`
+	animate.findRule('50%').style.transform = `translateY(${rect.top}px)`
+	animate.findRule('50%').style.height = `${rect.height}px`
+}
 
 
 
@@ -268,7 +331,7 @@ function typesetting(text){
 
 
 function Recommand(fid,recommandDom){
-	ajaxRequest("GET","/api/related/"+fid,function(responseText){
+	ajaxRequest("GET",`/api/related/${fid}`,function(responseText){
 		let recommand = JSON.parse(responseText)
 		buildRecommand(recommandDom,recommand)
 	})
@@ -298,12 +361,13 @@ function buildRecommand(recommandDom,recommand){
 		let name = document.createElement("div")
 		name.className = "name"
 
-		image.style.backgroundImage = 'url(https://dev.aidoru.tk'+recommand[i].image+')'
+		image.style.backgroundImage = `url(https://dev.aidoru.tk${recommand[i].image})`
 		title.innerHTML = recommand[i].title
-		avatar.style.backgroundImage = 'url(https://dev.aidoru.tk'+recommand[i].author.avatar+')'
+		avatar.style.backgroundImage = `url(https://dev.aidoru.tk${recommand[i].author.avatar})`
 		name.innerHTML = recommand[i].author.name
 
 		block.onclick = function(){
+			diaryAnimate(this)
 			newActivity('diary',{'fid':recommand[i].fid})
 		}
 

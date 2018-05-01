@@ -1,3 +1,17 @@
+.activity.diary>.front,
+.activity.diary>.back{
+	animation-iteration-count: 1;
+	animation-timing-function: ease-out;
+}
+.activity.diary>.front{
+	animation-name: spreadOut;
+	animation-duration: 420ms;
+}
+.activity.diary>.back{
+	animation-name: fadeIn;
+	animation-duration: 280ms;
+}
+
 .activity.diary{
 	/*background-image: url(11.png);*/
 	background-size: cover;
@@ -5,14 +19,17 @@
 	/*overflow: auto;*/
 }
 
-
 .activity.diary .topbar{
 	/*background-color: transparent;*/
 	background-color: #ffffff;
 	box-shadow: none;
 	position: fixed;
 	padding: 0 3px;
-	transition: all 0.12s ease-out;
+	transition: transform 120ms ease-out;
+}
+
+.activity.diary .topbar.change{
+	transition: transform 50ms linear;
 }
 
 .activity.diary .topbar button{
@@ -128,8 +145,7 @@ button.open::after{
 .article>.text>img.large{
 	width: 100%;
 	display: block;
-	padding-top: 8px;
-	padding-bottom: 8px;
+	margin: 8px 0;
 }
 /*.footer{
 	background-image: url("/static/image/footer.png");
@@ -237,4 +253,66 @@ br,img,.separator{
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+}
+
+.pswp__bg {
+	background: #fff !important;
+}
+
+.pswp__top-bar {
+	position: absolute;
+	left: 0;
+	top: 0;
+	height: 100%;
+	width: 100%;
+	will-change: opacity;
+	transition: all 333ms cubic-bezier(0.4,0,0.22,1);
+}
+.pswp__ui--hidden .pswp__top-bar,
+.pswp__ui--hidden .pswp__caption,
+.pswp__ui--hidden .pswp__button--arrow--left,
+.pswp__ui--hidden .pswp__button--arrow--right{
+    opacity: .001;
+    visibility: hidden;
+}
+.pswp__top-bar>.pswp__button{
+	width: 48px;
+	height: 48px;
+	margin: 0 4px;
+	color: #333333;
+	font-size: 24px;
+}
+.pswp__button--close{
+	float: left;
+}
+.pswp__button--download{
+	float: right;
+}
+.pswp__button--close::after{
+	content: "\E5CD";
+}
+.pswp__button--download::after{
+	content: "\E884";
+}
+.pswp__counter{
+	position: absolute;
+	width: 100%;
+	height: 6px;
+	bottom: 24px;
+	display: flex;
+	justify-content: center;
+}
+.pswp__counter dot{
+	width: 6px;
+	height: 6px;
+	border-radius: 50%;
+	margin: 0 4px;
+	background-color: rgba(0,0,0,0.2);
+}
+.pswp__counter dot:first-child{
+	position: absolute;
+	margin: auto;
+	left: 0;right: 0;top: 0;bottom: 0;
+	background-color: #333333;
+	transition: transform 120ms ease-out;
 }

@@ -33,3 +33,22 @@ function timeFriendly(date){
 	else
 		return timeFormat(post)
 }
+
+function toTop(element){
+	let delay = null
+	let previous = element.scrollTop
+	function scrollTop(){
+		if(element.scrollTop == 0)
+			clearTimeout(delay)
+		else if(previous != element.scrollTop)//interrupt
+			clearTimeout(delay)
+		else{
+			previous -= 60
+			element.scrollTop = previous
+			delay = setTimeout(function(){
+				scrollTop()
+			},10)
+		}
+	}
+	scrollTop()
+}

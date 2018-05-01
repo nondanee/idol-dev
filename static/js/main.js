@@ -42,15 +42,12 @@ function Overview(mid,overviewDom,activityDom){
 		let delta = afterScroll - beforeScroll
 		
 		beforeScroll = afterScroll
-		if(afterScroll == 0){
-			topbarDom.className = "topbar"
-		}
-		else if( delta < -8 ){
-			topbarDom.className = "topbar fixed"
-		}
-		else if( delta > 8 ){
-			topbarDom.className = "topbar"
-		}
+		if(afterScroll == 0)
+			topbarDom.classList.remove("fixed")
+		else if( delta < -8 )
+			topbarDom.classList.add("fixed")
+		else if( delta > 8 )
+			topbarDom.classList.remove("fixed")
 	})
 }
 
@@ -106,6 +103,7 @@ function buildFeed(feedDom,feed){
 		}
 
 		contentDom.onclick = function (){
+			diaryAnimate(this.parentNode)
 			newActivity('diary',{'fid':blog.fid})
 		}
 
@@ -155,6 +153,11 @@ function buildOverview(overviewDom,overview){
 	subscribesDom.innerHTML = overview.subscribes
 	let followButton = new FollowButton(overview.mid,overview.followed,followsDom)
 	let subscribeButton = new SubscribeButton(overview.mid,overview.subscribed,subscribesDom)
+
+	topbarDom.onclick = function(){
+		toTop(this.parentNode.parentNode)
+	}
+
 	topbarDom.appendChild(backButton)
 	topbarDom.appendChild(fillDom)
 	topbarDom.appendChild(subscribeButton)
@@ -214,7 +217,8 @@ function FavorButton(fid,favored,counter){
 	else{
 		button.className = "heart off"
 	}
-	button.onclick = function (){
+	button.onclick = function (event){
+		event.stopPropagation()
 		if(!loading){
 			loading = 1
 			if(!favored){
@@ -303,7 +307,8 @@ function SubscribeButton(mid,subscribed,counter){
 	else{
 		button.className = "subscribe off"
 	}
-	button.onclick = function (){
+	button.onclick = function (event){
+		event.stopPropagation()
 		if(!loading){
 			loading = 1
 			if(!subscribed){
@@ -451,7 +456,11 @@ window.onload = function (){
 
 
 
-window.onpopstate = function (){
+window.onpopstate = function (event){
+	if (galleryOpened){
+		galleryOpened = false
+		return
+	}
 	let activities = document.getElementsByClassName("activity")
 	let activity = activities.item(activities.length-1)
 	let back = activity.childNodes[0]
@@ -465,3 +474,4 @@ window.onpopstate = function (){
 	else
 		front.classList.add("drop")
 }
+
