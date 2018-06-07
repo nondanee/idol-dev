@@ -21,14 +21,14 @@ def route(request):
 
         yield from cursor.execute('''
             select
-            snippet.id,
-            snippet.post,
-            snippet.mid,
-            snippet.title,
-            snippet.image,
-            snippet.favors,
-            snippet.name,
-            snippet.romaji,
+            cut.id,
+            cut.post,
+            cut.mid,
+            cut.title,
+            cut.image,
+            cut.favors,
+            cut.name,
+            cut.romaji,
             favor.uid
             from(
                 select 
@@ -48,18 +48,18 @@ def route(request):
                     where feed.id = %s
                 )
                 and feed.mid = member.id
-                and feed.id != %s
+                and feed.id < %s
                 order by feed.post desc
                 limit 0,10
-            ) snippet
-            left join favor on favor.uid = %s and favor.fid = snippet.id
+            ) cut
+            left join favor on favor.uid = %s and favor.fid = cut.id
         ''',(fid,fid,uid))
 
         data = yield from cursor.fetchall()
         yield from cursor.close()
         connect.close()
 
-        if len(data) == 0:
+        if not data:
             return web.HTTPNotFound()
 
         json_back = []
@@ -82,5 +82,3 @@ def route(request):
             })
 
         return web.Response(text=tool.jsonify(json_back),content_type="application/json",charset="utf-8")
-
-    return web.HTTPServiceUnavailable()

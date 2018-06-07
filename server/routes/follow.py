@@ -36,7 +36,7 @@ def manifest(request):
         yield from cursor.close()
         connect.close()
 
-        if len(data) == 0:
+        if not data:
             return web.HTTPNotFound()
 
         json_back = []
@@ -56,8 +56,6 @@ def manifest(request):
             })
 
         return web.Response(text=tool.jsonify(json_back),content_type="application/json",charset="utf-8")
-
-    return web.HTTPServiceUnavailable()
 
 
 @asyncio.coroutine
@@ -81,13 +79,13 @@ def add(request):
         cursor= yield from connect.cursor()
 
         try:
-            yield from cursor.execute(
-                'insert into follow values (%s,%s)',
-                (uid,mid)
-            )
-            yield from connect.commit()
+            yield from cursor.execute('''
+                insert into follow values (%s,%s)
+            ''',(uid,mid))
         except Exception as error:
             print(error)
+            yield from cursor.close()
+            connect.close()
             if error.args[1].find('member') != -1:
                 return web.HTTPBadRequest()
             elif error.args[1].find('user') != -1:
@@ -95,12 +93,12 @@ def add(request):
                 return web.HTTPBadRequest()
             elif error.args[1].find('Duplicate') != -1:
                 return web.HTTPOk()
+        else:
+            yield from connect.commit()
+            yield from cursor.close()
+            connect.close()
 
-        yield from cursor.close()
-        connect.close()
-        return web.HTTPOk()
-
-    return web.HTTPServiceUnavailable()
+            return web.HTTPOk()
 
 
 @asyncio.coroutine
@@ -135,5 +133,3 @@ def remove(request):
             return web.HTTPOk()
         else:
             return web.HTTPBadRequest()
-
-    return web.HTTPServiceUnavailable()

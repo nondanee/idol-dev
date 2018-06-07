@@ -64,9 +64,6 @@ def all(request):
 
         json_back = []
 
-        if len(data) == 0:
-            return web.Response(text=tool.jsonify(json_back),content_type="application/json",charset="utf-8")
-
         for blog in data:
 
             json_back.append({
@@ -86,9 +83,7 @@ def all(request):
                 "favors": blog[6]
             })
 
-        return web.Response(text=tool.jsonify(json_back),content_type="application/json",charset="utf-8",headers={'Access-Control-Allow-Origin':'*'})
-
-    return web.HTTPServiceUnavailable()
+        return web.Response(text=tool.jsonify(json_back),content_type="application/json",charset="utf-8")
 
 
 @asyncio.coroutine
@@ -158,9 +153,6 @@ def follow(request):
 
         json_back = []
 
-        if len(data) == 0:
-            return web.Response(text=tool.jsonify(json_back),content_type="application/json",charset="utf-8")
-
         for blog in data:
 
             json_back.append({
@@ -180,10 +172,7 @@ def follow(request):
                 "favors": blog[6]
             })
 
-        return web.Response(text=tool.jsonify(json_back),content_type="application/json",charset="utf-8",headers={'Access-Control-Allow-Origin':'*'})
-
-    return web.HTTPServiceUnavailable()
-
+        return web.Response(text=tool.jsonify(json_back),content_type="application/json",charset="utf-8")
 
 
 @asyncio.coroutine
@@ -253,9 +242,6 @@ def favor(request):
 
         json_back = []
 
-        if len(data) == 0:
-            return web.Response(text=tool.jsonify(json_back),content_type="application/json",charset="utf-8")
-
         for blog in data:
 
             json_back.append({
@@ -277,8 +263,6 @@ def favor(request):
 
         return web.Response(text=tool.jsonify(json_back),content_type="application/json",charset="utf-8")
 
-    return web.HTTPServiceUnavailable()
-
 
 @asyncio.coroutine
 def member(request):
@@ -292,10 +276,10 @@ def member(request):
     else:
         uid = session['uid']
 
-    # try:
-    #     mid = int(parameters['mid'])
-    # except:
-    #     return web.HTTPBadRequest()
+    try:
+        mid = int(parameters['mid'])
+    except:
+        return web.HTTPBadRequest()
 
     try:
         page = int(parameters['page'])
@@ -348,9 +332,6 @@ def member(request):
 
         json_back = []
 
-        if len(data) == 0:
-            return web.Response(text=tool.jsonify(json_back),content_type="application/json",charset="utf-8")
-
         for blog in data:
 
             json_back.append({
@@ -371,5 +352,3 @@ def member(request):
             })
 
         return web.Response(text=tool.jsonify(json_back),content_type="application/json",charset="utf-8")
-
-    return web.HTTPServiceUnavailable()

@@ -11,7 +11,7 @@ def route(request):
     session = yield from get_session(request)
 
     if 'uid' not in session:
-        uid = -1
+        uid = 0
     else:
         uid = session['uid']
 
@@ -21,15 +21,15 @@ def route(request):
 
         yield from cursor.execute('''
             select
-            specific_blog.id,
-            specific_blog.post,
-            specific_blog.mid,
+            target.id,
+            target.post,
+            target.mid,
             member.name,
             member.romaji,
             member.affiliation,
-            specific_blog.link,
-            specific_blog.title,
-            specific_blog.favors,
+            target.link,
+            target.title,
+            target.favors,
             blog.text_original,
             favor.uid
             from (
@@ -42,20 +42,18 @@ def route(request):
                 feed.favors
                 from feed
                 where feed.id = %s
-            ) specific_blog
-            inner join blog on blog.id = specific_blog.id
-            inner join member on member.id = specific_blog.mid
-            left join favor on favor.uid = %s and favor.fid = specific_blog.id
+            ) target
+            inner join blog on blog.id = target.id
+            inner join member on member.id = target.mid
+            left join favor on favor.uid = %s and favor.fid = target.id
         ''',(fid,uid))
 
-        data = yield from cursor.fetchall()
+        data = yield from cursor.fetchone()
         yield from cursor.close()
         connect.close()
 
-        if len(data) == 0:
+        if not data:
             return web.HTTPNotFound()
-        else:
-            data = data[0]
 
         json_back = {
             "fid": str(data[0]).zfill(7),
@@ -75,5 +73,3 @@ def route(request):
         }
 
         return web.Response(text=tool.jsonify(json_back),content_type="application/json",charset="utf-8")
-
-    return web.HTTPServiceUnavailable()

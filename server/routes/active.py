@@ -21,8 +21,8 @@ def route(request):
                 uid = random.randint(0,99999999)
                 try:
                     yield from cursor.execute(
-                        'insert into user values(%s,%s,%s,%s,%s)',
-                        (uid,datetime.datetime.now().strftime('%Y/%m/%d %H:%M:%S'),ip_address,user_agent,"")
+                        'insert into user values(%s,now(),%s,%s,"")',
+                        (uid,ip_address,user_agent)
                     )
                     break
                 except Exception as error:
@@ -37,8 +37,8 @@ def route(request):
             uid = session["uid"]
             try:
                 updated = yield from cursor.execute(
-                    'update user set last_active = %s,ip_address = %s,user_agent = %s where id = %s',
-                    (datetime.datetime.now().strftime('%Y/%m/%d %H:%M:%S'),ip_address,user_agent,uid)
+                    'update user set last_active = now(),ip_address = %s,user_agent = %s where id = %s',
+                    (ip_address,user_agent,uid)
                 )
             except Exception as error:
                 print(error)

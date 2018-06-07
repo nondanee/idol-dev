@@ -21,12 +21,9 @@ def prepare(request):
     with (yield from request.app['pool']) as connect:
 
         cursor= yield from connect.cursor()
-        updated = yield from cursor.execute(
-            'update user set end_point = %s where id = %s',
-            (end_point,uid)
-        )
+        updated = yield from cursor.execute('''update user set end_point = %s where id = %s
+        ''',(end_point,uid))
         yield from connect.commit()
-        
         yield from cursor.close()
         connect.close()
 
@@ -34,8 +31,6 @@ def prepare(request):
             return web.HTTPOk()
         else:
             return web.HTTPOk()
-
-    return web.HTTPServiceUnavailable()
 
 
 @asyncio.coroutine
@@ -59,13 +54,12 @@ def confirm(request):
         cursor= yield from connect.cursor()
 
         try:
-            yield from cursor.execute(
-                'insert into subscription values (%s,%s)',
-                (uid,mid)
-            )
-            yield from connect.commit()
+            yield from cursor.execute('''insert into subscription values (%s,%s)
+            ''',(uid,mid))
         except Exception as error:
             print(error)
+            yield from cursor.close()
+            connect.close()
             if error.args[1].find('member') != -1:
                 return web.HTTPBadRequest()
             elif error.args[1].find('user') != -1:
@@ -73,12 +67,13 @@ def confirm(request):
                 return web.HTTPBadRequest()
             elif error.args[1].find('Duplicate') != -1:
                 return web.HTTPOk()
+        else:
+            yield from connect.commit()
+            yield from cursor.close()
+            connect.close()
 
-        yield from cursor.close()
-        connect.close()
-        return web.HTTPOk()
+            return web.HTTPOk()
 
-    return web.HTTPServiceUnavailable()
 
 @asyncio.coroutine
 def cancel(request):
@@ -112,5 +107,3 @@ def cancel(request):
             return web.HTTPOk()
         else:
             return web.HTTPBadRequest()
-
-    return web.HTTPServiceUnavailable()

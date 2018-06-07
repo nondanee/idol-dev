@@ -25,13 +25,13 @@ def route(request):
 
         yield from cursor.execute('''
             select
-            member_info.id,
-            member_info.romaji,
-            member_info.name,
-            member_info.affiliation,
-            member_info.introduction,
-            member_info.follows,
-            member_info.subscribes,
+            overview.id,
+            overview.romaji,
+            overview.name,
+            overview.affiliation,
+            overview.introduction,
+            overview.follows,
+            overview.subscribes,
             follow.uid,
             subscription.uid
             from (
@@ -45,19 +45,17 @@ def route(request):
                 member.subscribes
                 from member
                 where member.id = %s
-            ) member_info
-            left join follow on follow.uid = %s and follow.mid = member_info.id
-            left join subscription on subscription.uid = %s and subscription.mid = member_info.id
+            ) overview
+            left join follow on follow.uid = %s and follow.mid = overview.id
+            left join subscription on subscription.uid = %s and subscription.mid = overview.id
         ''',(mid,uid,uid))
 
-        data = yield from cursor.fetchall()
+        data = yield from cursor.fetchone()
         yield from cursor.close()
         connect.close()
 
-        if len(data) == 0:
+        if not data:
             return web.HTTPNotFound()
-        else:
-            data = data[0]
 
         json_back = {
             "mid": str(data[0]).zfill(4),
@@ -73,5 +71,3 @@ def route(request):
         }
 
         return web.Response(text=tool.jsonify(json_back),content_type="application/json",charset="utf-8")
-
-    return web.HTTPServiceUnavailable()

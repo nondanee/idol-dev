@@ -24,13 +24,13 @@ def create(request):
         cursor= yield from connect.cursor()
 
         try:
-            yield from cursor.execute(
-                'insert into favor values (%s,%s)',
-                (uid,fid)
-            )
-            yield from connect.commit()
+            yield from cursor.execute('''
+                insert into favor values (%s,%s)
+            ''',(uid,fid))
         except Exception as error:
             print(error)
+            yield from cursor.close()
+            connect.close()
             if error.args[1].find('member') != -1:
                 return web.HTTPBadRequest()
             elif error.args[1].find('feed') != -1:
@@ -38,13 +38,12 @@ def create(request):
                 return web.HTTPBadRequest()
             elif error.args[1].find('Duplicate') != -1:
                 return web.HTTPOk()
-
-        yield from cursor.close()
-        connect.close()
-        return web.HTTPOk()
-
-    return web.HTTPServiceUnavailable()
-
+        else:
+            yield from connect.commit()
+            yield from cursor.close()
+            connect.close()
+            
+            return web.HTTPOk()
 
 
 @asyncio.coroutine
@@ -67,10 +66,9 @@ def destroy(request):
 
         cursor= yield from connect.cursor()
 
-        deleted = yield from cursor.execute(
-            'delete from favor where uid = %s and fid = %s',
-            (uid,fid)
-        )
+        deleted = yield from cursor.execute('''
+            delete from favor where uid = %s and fid = %s
+        ''',(uid,fid))
         yield from connect.commit()
         yield from cursor.close()
         connect.close()
@@ -79,5 +77,3 @@ def destroy(request):
             return web.HTTPOk()
         else:
             return web.HTTPBadRequest()
-
-    return web.HTTPServiceUnavailable()
